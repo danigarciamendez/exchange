@@ -24,6 +24,7 @@ Route::get('/dashboard', function () {
 })->middleware(['auth'])->name('dashboard');
 
     // ROUTES OF CRYPTOCURRENCY
+    
 Route::get('/cryptocurrency', [CryptocurrencyController::class, 'index'])
     ->name('cryptocurrency.index');
 
@@ -32,6 +33,7 @@ Route::get('/cryptocurrency/new', [CryptocurrencyController::class, 'create'])
 
 
     // ROUTES OF WALLET
+
 Route::get('/wallet', [WalletController::class, 'index'])
     ->name('wallet.index');
 

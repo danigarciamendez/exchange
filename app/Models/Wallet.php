@@ -13,16 +13,15 @@ class Wallet extends Model
 
     protected $fillable = [
         'user_id',
-        'crypto_id',
-        'quantity',
-        'value'
+        'cryptocurrency_id',
+        'quantity'
     ];
 
-    public function user(){
+    public function users(){
         return $this->belongsTo(User::class);
     }
 
     public function cryptos(){
-        return $this->belongsTo(Cryptocurrency::class,'crypto_id','id');
+        return $this->belongsTo(Cryptocurrency::class,'cryptocurrency_id','id');
     }
 }

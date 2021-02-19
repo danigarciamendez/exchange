@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Wallet;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
@@ -14,10 +15,10 @@ class WalletSeed extends Seeder
      */
     public function run()
     {
-        DB::table('wallets')->insert([
+        Wallet::insert([
             'user_id' => 1,
-            'crypto_id' => 1,
-            'quantity' => 2 
+            'cryptocurrency_id' => 1,
+            'quantity' => 20 
         ]);
 
     }

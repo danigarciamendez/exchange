@@ -44,6 +44,17 @@
                                 type="password"
                                 name="password_confirmation" required />
             </div>
+            <!-- Is Admin -->
+            <div class="mt-4">
+                <label class="inline-flex items-center">
+                    <input type="radio" class="form-radio" name="account_type" value="admin">
+                    <span class="ml-2">Admin</span>
+                </label>
+                <label class="inline-flex items-center ml-6">
+                    <input type="radio" class="form-radio" name="account_type" value="user">
+                    <span class="ml-2">User</span>
+                </label>
+            </div>
 
             <div class="flex items-center justify-end mt-4">
                 <a class="underline text-sm text-gray-600 hover:text-gray-900" href="{{ route('login') }}">

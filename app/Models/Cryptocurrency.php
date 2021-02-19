@@ -20,6 +20,6 @@ class Cryptocurrency extends Model
     ];
 
     public function wallets(){
-        return $this->hasMany(Wallet::class, 'id','crypto_id');
+        return $this->hasMany(Wallet::class, 'id','cryptocurrency_id');
     }
 }

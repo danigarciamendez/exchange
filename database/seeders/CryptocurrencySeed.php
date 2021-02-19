@@ -18,7 +18,7 @@ class CryptocurrencySeed extends Seeder
             'name'=>'Bitcoin',
             'description' => 'Bitcoin es la mejor criptomoneda.',
             'price' => 41000.65,
-            'image' => '/app/resources/img/bitcoin.jpg',
+            'image' => '/resources/img/bitcoin.jpg',
             'vol_market' => 22500.800
         ]);
     }

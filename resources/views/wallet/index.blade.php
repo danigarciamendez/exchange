@@ -24,13 +24,13 @@
                     </thead>
                     <tbody class="text-center">
                     @foreach ($wallets as $wallet)
-                             
+                        
                         <tr>
-                            <td><img class="m-10 h-10 content-center" src="/proyectos/exchange/{{$wallet->image}}" alt=""></td>
-                            <td>{{$wallet->name}}</td>
-                            <td>{{$wallet->price}}</td>
+                            <td><img class="m-10 h-10 content-center" src="/proyectos/exchange/{{$wallet->cryptos->image}}" alt=""></td>
+                            <td>{{$wallet->cryptos->name}}</td>
+                            <td>{{$wallet->cryptos->price}}</td>
                             <td>{{$wallet->quantity}}</td>
-                            <td>{{$wallet->quantity*$wallet->cripto()->price</td>
+                            <td>{{$wallet->quantity*$wallet->cryptos->price}} €</td>
                             <td><button style="background-color:aqua;padding:5%; border-radius: 20%;">Vender</button></td>
                         </tr>
                     @endforeach

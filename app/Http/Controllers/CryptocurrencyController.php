@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Cryptocurrency;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -15,7 +16,7 @@ class CryptocurrencyController extends Controller
      */
     public function index()
     {
-        $cryptos = DB::table('cryptocurrencies')->get();
+        $cryptos = Cryptocurrency::get();
 
         return view('cryptocurrency.index',[
             'cryptos' => $cryptos]);
@@ -39,7 +40,25 @@ class CryptocurrencyController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'required|string|email|max:255|unique:users',
+            'price' => 'required|numeric',
+            'image' =>'required|string',
+            'vol_market' => 'require|numeric'
+        ]);
+        
+        $cryptocurrency = Cryptocurrency::create([
+            'name' => $request->name,
+            'description' => $request->description,
+            'price' => $request->price,
+            'image' => $request->image,
+            'vol_market' => $request->vol_market,
+        ]);
+
+        event(new Registered($$cryptocurrency));
+
+        return redirect(view('cryptocurrency.create'));
     }
 
     /**
@@ -50,7 +69,10 @@ class CryptocurrencyController extends Controller
      */
     public function show(Cryptocurrency $cryptocurrency)
     {
-        
+        $cryptos = Cryptocurrency::find($cryptocurrency->id)->get();
+
+        return view('cryptocurrency.index',[
+            'cryptos' => $cryptos]);
     }
 
     /**
