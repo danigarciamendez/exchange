@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Exchange;
+use App\Models\Follow;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
-class ExchangeController extends Controller
+class FollowController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,10 +16,7 @@ class ExchangeController extends Controller
      */
     public function index()
     {
-        $exchange = Exchange::get();
-
-        return view('exchange.index',[
-            'exchanges' => $exchange]);
+        //
     }
 
     /**
@@ -28,9 +26,7 @@ class ExchangeController extends Controller
      */
     public function create()
     {
-        
-        return view('exchange.create');
-        
+        //
     }
 
     /**
@@ -41,45 +37,43 @@ class ExchangeController extends Controller
      */
     public function store(Request $request)
     {
+        $user_id = Auth::user()->id;
         $request->validate([
-            'name' => 'required|string|max:255',
-            'image' =>'required|string',
-            'website' => 'required|string|max:255',
-            'crypto_number' => 'required|regex:^[1-9][0-9]+|not_in:0"',
-            'assessment' => 'require|regex:^[1-9][0-9]+|not_in:0"'
+            'crypto_id' => 'required|string|max:255',
+            
+            
         ]);
+
         
-        $cryptocurrency = Exchange::create([
+        $follow = Follow::create([
             'name' => $request->name,
             'description' => $request->description,
-            'price' => $request->price,
-            'image' => $request->image,
-            'vol_market' => $request->vol_market,
+            
         ]);
 
-        event(new Registered($$cryptocurrency));
+        event(new Registered($follow));
 
-        return redirect(view('exchange.create'));
+        return redirect(view('cryptocurrency.index'));
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Exchange  $exchange
+     * @param  \App\Models\Follow  $follow
      * @return \Illuminate\Http\Response
      */
-    public function show(Exchange $exchange)
+    public function show(Follow $follow)
     {
-        return view('exchange.show',compact('exchange'));
+        //
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Exchange  $exchange
+     * @param  \App\Models\Follow  $follow
      * @return \Illuminate\Http\Response
      */
-    public function edit(Exchange $exchange)
+    public function edit(Follow $follow)
     {
         //
     }
@@ -88,10 +82,10 @@ class ExchangeController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Exchange  $exchange
+     * @param  \App\Models\Follow  $follow
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Exchange $exchange)
+    public function update(Request $request, Follow $follow)
     {
         //
     }
@@ -99,11 +93,35 @@ class ExchangeController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Exchange  $exchange
+     * @param  \App\Models\Follow  $follow
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Exchange $exchange)
+    public function destroy(Follow $follow)
     {
         //
+    }
+
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function new_follow($crypto_id)
+    {
+        $user_id = Auth::user()->id;
+        
+
+        
+        $follow = Follow::create([
+            'user_id' => $user_id,
+            'cryptocurrency_id' => $crypto_id,
+            
+        ]);
+
+        event(new Registered($follow));
+
+        return view('cryptocurrency.index');
     }
 }

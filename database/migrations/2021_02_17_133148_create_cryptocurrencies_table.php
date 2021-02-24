@@ -16,10 +16,16 @@ class CreateCryptocurrenciesTable extends Migration
         Schema::create('cryptocurrencies', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('description');
+            $table->string('symbol');
             $table->float('price');
             $table->string('image');
-            $table->double('vol_market');
+            $table->double('percent_change_1h');
+            $table->double('percent_change_24h');
+            $table->double('percent_change_7d');
+            $table->double('percent_change_30d');
+            $table->double('volume_24h');
+            $table->double('market_cap');
+            $table->string('date_added');
             $table->timestamps();
         });
     }

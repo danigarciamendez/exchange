@@ -15,8 +15,9 @@ class CryptocurrencyController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {
-        $cryptos = Cryptocurrency::get();
+    {   
+        
+        $cryptos = Cryptocurrency::paginate(10);
 
         return view('cryptocurrency.index',[
             'cryptos' => $cryptos]);
@@ -42,10 +43,10 @@ class CryptocurrencyController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'description' => 'required|string|email|max:255|unique:users',
-            'price' => 'required|numeric',
+            'description' => 'required|string|max:255',
+            'price' => 'required|regex:^[1-9][0-9]+|not_in:0"',
             'image' =>'required|string',
-            'vol_market' => 'require|numeric'
+            'vol_market' => 'require|regex:^[1-9][0-9]+|not_in:0"'
         ]);
         
         $cryptocurrency = Cryptocurrency::create([
@@ -56,7 +57,7 @@ class CryptocurrencyController extends Controller
             'vol_market' => $request->vol_market,
         ]);
 
-        event(new Registered($$cryptocurrency));
+        event(new Registered($cryptocurrency));
 
         return redirect(view('cryptocurrency.create'));
     }
@@ -67,12 +68,12 @@ class CryptocurrencyController extends Controller
      * @param  \App\Models\Cryptocurrency  $cryptocurrency
      * @return \Illuminate\Http\Response
      */
-    public function show(Cryptocurrency $cryptocurrency)
+    public function show($id)
     {
-        $cryptos = Cryptocurrency::find($cryptocurrency->id)->get();
+        $cryptos = Cryptocurrency::find($id);
 
-        return view('cryptocurrency.index',[
-            'cryptos' => $cryptos]);
+        return view('cryptocurrency.show',[
+            'crypto' => $cryptos]);
     }
 
     /**
@@ -81,9 +82,12 @@ class CryptocurrencyController extends Controller
      * @param  \App\Models\Cryptocurrency  $cryptocurrency
      * @return \Illuminate\Http\Response
      */
-    public function edit(Cryptocurrency $cryptocurrency)
+    public function edit($id)
     {
-        //
+        $cryptocurrency = Cryptocurrency::find($id);
+
+        return view('cryptocurrency.admin.edit',[
+            'cryptocurrency' => $cryptocurrency]);
     }
 
     /**
@@ -95,7 +99,32 @@ class CryptocurrencyController extends Controller
      */
     public function update(Request $request, Cryptocurrency $cryptocurrency)
     {
-        //
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'required|string|email|max:255|unique:users',
+            'price' => 'required|regex:^[1-9][0-9]+|not_in:0"',
+            'image' =>'required|string',
+            'vol_market' => 'require|regex:^[1-9][0-9]+|not_in:0"'
+        ]);
+        $crypto = Cryptocurrency::find($cryptocurrency->id);
+ 
+        if (!$crypto) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Plate not found'
+            ], 400);
+
+        }
+
+        $updated = $crypto->fill($request->all())->save();
+ 
+        if ($updated)
+            return redirect(view('cryptocurrency.admin.index'));
+        else
+            return response()->json([
+                'success' => false,
+                'message' => 'Post can not be updated'
+            ], 500);
     }
 
     /**
@@ -106,6 +135,10 @@ class CryptocurrencyController extends Controller
      */
     public function destroy(Cryptocurrency $cryptocurrency)
     {
-        //
+        $crypto = Cryptocurrency::find($cryptocurrency->id);
+
+        if($crypto->delete()){
+            return view();
+        }
     }
 }

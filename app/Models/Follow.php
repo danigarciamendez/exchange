@@ -5,23 +5,23 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Wallet extends Model
+class Follow extends Model
 {
     use HasFactory;
 
-    protected $table = 'wallets';
+    protected $table = 'follows';
 
     protected $fillable = [
         'user_id',
-        'cryptocurrency_id',
-        'quantity'
+        'cryptocurrency_id'
     ];
 
     public function users(){
-        return $this->belongsTo(User::class);
+        $this->belongsTo(User::class);
     }
 
     public function cryptos(){
-        return $this->belongsTo(Cryptocurrency::class,'cryptocurrency_id','id');
+        $this->belongsTo(Cryptocurrency::class);
     }
+
 }

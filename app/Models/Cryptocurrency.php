@@ -13,13 +13,19 @@ class Cryptocurrency extends Model
 
     protected $fillable = [
         'name',
+        'symbol',
+        'percent_change_24h',
         'description',
         'price',
         'image',
         'vol_market'
     ];
 
-    public function wallets(){
-        return $this->hasMany(Wallet::class, 'id','cryptocurrency_id');
+    public function contains(){
+        return $this->hasMany(Contain::class);
+    }
+
+    public function follows(){
+        return $this->hasMany(Follow::class);
     }
 }

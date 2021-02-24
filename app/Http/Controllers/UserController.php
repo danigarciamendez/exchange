@@ -2,12 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Wallet;
-use App\Models\Cryptocurrency;
+use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
-class WalletController extends Controller
+class UserController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,12 +14,10 @@ class WalletController extends Controller
      */
     public function index()
     {
-        $wallets = Wallet::where('user_id', Auth::user()->id)->get();
+        $user = User::all();
+        return view('user.admin.index',['users' => $user]);
+
         
-        // $cryto = $wallets
-        return view('wallet.index',[
-            'wallets' => $wallets
-            ]);
     }
 
     /**
@@ -31,7 +27,7 @@ class WalletController extends Controller
      */
     public function create()
     {
-        return view('wallet.create');
+        //
     }
 
     /**
@@ -48,21 +44,22 @@ class WalletController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Wallet  $wallet
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Wallet $wallet)
-    {
-        //
+    public function show($id)
+    {   
+        $user = User::find($id);
+        return view('user.show',['user' => $user]);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Wallet  $wallet
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Wallet $wallet)
+    public function edit($id)
     {
         //
     }
@@ -71,10 +68,10 @@ class WalletController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Wallet  $wallet
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Wallet $wallet)
+    public function update(Request $request, $id)
     {
         //
     }
@@ -82,10 +79,10 @@ class WalletController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Wallet  $wallet
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Wallet $wallet)
+    public function destroy($id)
     {
         //
     }

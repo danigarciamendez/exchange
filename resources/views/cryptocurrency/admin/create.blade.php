@@ -10,7 +10,7 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 bg-white border-b border-gray-200">
-                <form method="POST" action="{{ route('register') }}">
+                <form method="POST" action="{{ route('cryptocurrency.store') }}">
                     @csrf
 
                     <!-- Name Cryptocurrency -->
@@ -44,12 +44,12 @@
                     <div class="mt-4">
                         <x-label for="vol_market" :value="__('Vol. Market')" />
 
-                        <x-input id="vol_market" class="block mt-1 w-full" type="number" name="vol_market":value="old('vol_market')" required/>
+                        <x-input id="vol_market" class="block mt-1 w-full" type="text" name="vol_market" :value="old('vol_market')" required/>
                     </div>
 
                    
 
-                        <x-button class="ml-4">
+                        <x-button class="ml-4" >
                             {{ __('Añadir') }}
                         </x-button>
                     </div>

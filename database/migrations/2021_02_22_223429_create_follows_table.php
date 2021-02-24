@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateExchangesTable extends Migration
+class CreateFollowsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,10 @@ class CreateExchangesTable extends Migration
      */
     public function up()
     {
-        Schema::create('exchanges', function (Blueprint $table) {
+        Schema::create('follows', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('image');
-            $table->text('description');
-            $table->string('website');
-            $table->integer('crypto_number');
-            $table->float('assessment');
+            $table->foreignId('user_id')->constrained();
+            $table->foreignId('cryptocurrency_id')->constrained();
             $table->timestamps();
         });
     }
@@ -32,6 +28,6 @@ class CreateExchangesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('exchanges');
+        Schema::dropIfExists('follows');
     }
 }

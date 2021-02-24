@@ -31,7 +31,10 @@
                             <td>{{$wallet->cryptos->price}}</td>
                             <td>{{$wallet->quantity}}</td>
                             <td>{{$wallet->quantity*$wallet->cryptos->price}} €</td>
-                            <td><button style="background-color:aqua;padding:5%; border-radius: 20%;">Vender</button></td>
+                            <td><x-button class="ml-4" >
+                                    {{ __('Vender') }}
+                                </x-button>
+                            </td>
                         </tr>
                     @endforeach
                     </tbody>
