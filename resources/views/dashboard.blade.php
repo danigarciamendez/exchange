@@ -11,43 +11,54 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 bg-white border-b border-gray-200">
                 
-                <!-- /** * Requires curl enabled in php.ini
-                    **/ -->
+                @if(!empty($cryptos))
+                
+                <table class="table-fixed border">
+                    <thead>
+                        <tr>
+                            <th class="w-1/10"></th>
+                            <th class="w-1/6">Ranking</th>
+                            <th class="w-1/6">Name</th>
+                            <th class="w-1/6">Price</th>
+                            <th class="w-1/6">24h Variation</th>
+                            
+                            <th class="w-1/4"></th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-center">
+                    @foreach ($cryptos as $crypto)
+                             
+                        <tr>
+                            <!--  -->
+                            <td><img class="m-10 h-10 content-center" src="../resources/img/cryptocurrencies/{{$crypto->image}}" alt=""></td>
+                            <td>#{{$crypto->id}}</td>
+                            <td>{{$crypto->name}}</td>
+                            <td>{{$crypto->price}} $</td>
+                            @if($crypto->percent_change_24h > 0)
+                            <td style="color: green;">{{$crypto->percent_change_24h}} %</td>
+                            @endif
+                            @if($crypto->percent_change_24h < 0)
+                            <td style="color: red;">{{$crypto->percent_change_24h}} %</td>
+                            @endif
 
-                    <?php
-                    
-                    // $url = 'https://pro-api.coinmarketcap.com/v1/cryptocurrency/info';
-                    // $parameters = [
-                    // 'id' => 1
-                    
-                    // ];
 
-                    // $headers = [
-                    // 'Accepts: application/json',
-                    // 'X-CMC_PRO_API_KEY: 082605a1-c449-4636-b389-c66606e85630'
-                    // ];
-                    // $qs = http_build_query($parameters); // query string encode the parameters
-                    // $request = "{$url}?{$qs}"; // create the request URL
-
-
-                    // $curl = curl_init(); // Get cURL resource
-                    // // Set cURL options
-                    // curl_setopt_array($curl, array(
-                    // CURLOPT_URL => $request,            // set the request URL
-                    // CURLOPT_HTTPHEADER => $headers,     // set the headers 
-                    // CURLOPT_RETURNTRANSFER => 1         // ask for raw response instead of bool
-                    // ));
-
-                    // $response = curl_exec($curl); // Send the request, save the response
-                    // $resp = json_decode($response,true); // print json decoded response
-                   
-                    // print_r($resp);
+                            
+                            <td><a class="bg-yellow-500  rounded p-2" href ="{{ route('cryptocurrency.show',$crypto->id) }}" >
+                                    {{ __('Detalles') }}
+                                </a>
+                            </td>
+                        </tr>
+                    @endforeach
                     
-                    // curl_close($curl); // Close request
+                    </tbody>
                     
-                    
-                    ?>
-                    <!-- "> -->
+                </table>
+                @else
+                <div class="text-center">
+                    <h1 class="bg-yellow-100">Follow some cryptocurrency!</h1>
+                </div>
+                @endif
+                
                 </div>
             </div>
         </div>

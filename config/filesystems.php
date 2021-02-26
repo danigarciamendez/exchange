@@ -41,7 +41,26 @@ return [
             'url' => env('APP_URL').'/storage',
             'visibility' => 'public',
         ],
-
+        'users' => [
+            'driver' => 'local',
+            'root' => storage_path('app/users'),
+            'url' => env('APP_URL') . '/storage',
+            'visibility' => 'public',
+        ],
+        'exchanges' => [
+            'driver' => 'local',
+            'root' => storage_path('app/exchanges'),
+            'url' => env('APP_URL') . '/storage',
+            'visibility' => 'public',
+        ],
+    
+            // Disco que almacenará las imágenes subidas por los usuarios
+        'cryptos' => [
+                'driver' => 'local',
+                'root' => storage_path('app/cryptos'),
+                'url' => env('APP_URL') . '/storage',
+                'visibility' => 'public',
+            ],
         's3' => [
             'driver' => 's3',
             'key' => env('AWS_ACCESS_KEY_ID'),

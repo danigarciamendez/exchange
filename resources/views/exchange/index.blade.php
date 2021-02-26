@@ -26,11 +26,11 @@
                     @foreach ($exchanges as $exchange)
                              
                         <tr>
-                            <td><img class="m-10 h-10 content-center" src="/proyectos/exchange/reources/img/exchanges/{{$exchange->image}}" alt=""></td>
+                            <td><img class="pl-8 pt-2 mb-2 w-30 h-20 " src="../resources/img/exchanges/{{$exchange->image}}" alt=""></td>
                             <td>{{$exchange->name}}</td>
                             <td>+ {{$exchange->crypto_number}}</td>
                             <td>{{$exchange->assessment}}</td>
-                            <td><a href="{{$exchange->website}}">Ir a enlace</a></td>
+                            <td><a href="{{$exchange->website}}">Go to</a></td>
                             
                             <td>
                                 <a class="bg-yellow-500 rounded p-3" href="{{ route('exchange.show',$exchange) }}">

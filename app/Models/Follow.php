@@ -17,11 +17,11 @@ class Follow extends Model
     ];
 
     public function users(){
-        $this->belongsTo(User::class);
+        return $this->belongsTo(User::class);
     }
 
     public function cryptos(){
-        $this->belongsTo(Cryptocurrency::class);
+        return $this->belongsTo(Cryptocurrency::class);
     }
 
 }

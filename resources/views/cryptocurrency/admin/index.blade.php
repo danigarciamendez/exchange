@@ -10,7 +10,19 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 bg-white border-b border-gray-200">
+                <form action="{{ route('cryptocurrency.index') }}" class="form-inline" method="GET">
+                @csrf
                 
+
+                <select name="type" class="form-control mr-sm-2" id="exampleFormControlSelect1">
+                    
+                    <option value="name">Name</option>
+                    <option value="symbol">Symbol</option>
+                </select>
+                <input type="text" name="data">
+                    
+                    <button class="bg-yellow-500 rounded ml-2 p-2" type="submit">Buscar</button>
+                </form>
                 <table class="table-fixed border">
                     <thead>
                         <tr>
@@ -28,12 +40,17 @@
                     @foreach ($cryptos as $crypto)
                              
                         <tr>
-                            <td><img class="m-10 h-10 content-center" src="/proyectos/exchange/{{$crypto->image}}" alt=""></td>
+                            <td><img class="m-10 h-10 content-center" src="../../resources/img/cryptocurrencies/{{$crypto->image}}" alt=""></td>
                             <td>#{{$crypto->id}}</td>
                             <td>{{$crypto->name}}</td>
                             <td>{{$crypto->symbol}}</td>
                             <td>{{$crypto->price}}</td>
-                            <td style="color: green;"><i style="color:green;" class="fas fa-chevron-up"></i> 2,4%</td>
+                            @if($crypto->percent_change_24h > 0)
+                            <td style="color: green;">{{$crypto->percent_change_24h}} %</td>
+                            @endif
+                            @if($crypto->percent_change_24h < 0)
+                            <td style="color: red;">{{$crypto->percent_change_24h}} %</td>
+                            @endif
                             <td><a class="bg-yellow-500  rounded p-2" href ="{{ route('cryptocurrency.admin.edit',$crypto->id) }}" >
                                     {{ __('Editar') }}
                                 </a>
@@ -45,6 +62,7 @@
                         </tr>
                     @endforeach
                     </tbody>
+                    {{ $cryptos->links() }}
                 </table>
                 </div>
             </div>

@@ -23,11 +23,7 @@
                             </div>
                         </div>
                     </div>
-                <!-- <div>
-
-                    <p>Nombre : {{$exchange->name}}</p>
-                    <p>{{$exchange->website}}</p>
-                </div> -->
+                
                 </div>
             </div>
         </div>

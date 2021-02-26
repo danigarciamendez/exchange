@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Exchange;
 use App\Models\Follow;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 
 class FollowController extends Controller
 {
@@ -85,9 +88,9 @@ class FollowController extends Controller
      * @param  \App\Models\Follow  $follow
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Follow $follow)
+    public function update(Request $request, Exchange $exchange)
     {
-        //
+        
     }
 
     /**
@@ -96,9 +99,16 @@ class FollowController extends Controller
      * @param  \App\Models\Follow  $follow
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Follow $follow)
-    {
-        //
+
+    public function delete(Request $request)
+    {   
+        $id = $request->input('cryptocurrency_id');
+        $user_id = Auth::user()->id;
+        $follow = Follow::where('cryptocurrency_id',$id)->where('user_id',$user_id);
+
+        $follow->delete();
+        return redirect()->action([CryptocurrencyController::class, 'index']);
+        
     }
 
 
@@ -108,20 +118,24 @@ class FollowController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function new_follow($crypto_id)
+    public function new_follow(Request $request)
     {
+        
         $user_id = Auth::user()->id;
-        
 
-        
-        $follow = Follow::create([
-            'user_id' => $user_id,
-            'cryptocurrency_id' => $crypto_id,
+       
+
+        $request->validate([
+            'cryptocurrency_id' => 'required',
             
         ]);
-
+        $follow = Follow::create([
+            'user_id' => $user_id,
+            'cryptocurrency_id' => $request->cryptocurrency_id  
+        ]);
+        
         event(new Registered($follow));
-
-        return view('cryptocurrency.index');
+        
+        return redirect()->action([CryptocurrencyController::class, 'index']);
     }
 }

@@ -23,9 +23,9 @@ class CreateCryptocurrenciesTable extends Migration
             $table->double('percent_change_24h');
             $table->double('percent_change_7d');
             $table->double('percent_change_30d');
-            $table->double('volume_24h');
+            $table->double('volume_24h')->nullable();
             $table->double('market_cap');
-            $table->string('date_added');
+            $table->string('date_added')->nullable();
             $table->timestamps();
         });
     }

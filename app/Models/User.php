@@ -18,6 +18,7 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name',
+        'surname',
         'email',
         'password',
         'account_type'
@@ -44,6 +45,11 @@ class User extends Authenticatable
 
     public function follows(){
         return $this->hasMany(Follow::class);
+    }
+
+
+    public function cryptocurrencies(){
+        return $this->belongsToMany(Cryptocurrency::class, 'follows', 'user_id', 'cryptocurrency_id');
     }
 
 }

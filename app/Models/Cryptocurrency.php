@@ -14,11 +14,16 @@ class Cryptocurrency extends Model
     protected $fillable = [
         'name',
         'symbol',
-        'percent_change_24h',
-        'description',
         'price',
         'image',
-        'vol_market'
+        'percent_change_1h',
+        'percent_change_24h',
+        'percent_change_7d',
+        'percent_change_30d',
+        'volume_24h',
+        'market_cap',
+        'date_added'
+        
     ];
 
     public function contains(){
@@ -27,5 +32,19 @@ class Cryptocurrency extends Model
 
     public function follows(){
         return $this->hasMany(Follow::class);
+    }
+    public function users(){
+        return $this->belongsToMany(User::class, 'follows', 'cryptocurrency_id', 'user_id');
+    }
+
+    public function exchanges(){
+        return $this->belongsToMany(Exchange::class, 'contains', 'cryptocurrency_id', 'exchange_id');
+    }
+    
+    
+    public function scopeSearchBy($query, $type, $search) {
+    	if ( ($type) && ($search) ) {
+    		return $query->where($type,'like',"%$search%");
+    	}
     }
 }
