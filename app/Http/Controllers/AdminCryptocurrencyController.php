@@ -52,20 +52,20 @@ class AdminCryptocurrencyController extends Controller
      * @param  \App\Models\Cryptocurrency  $cryptocurrency
      * @return \Illuminate\Http\Response
      */
-    // public function update(Request $request, $id)
-    // {
-    //     $request->validate([
-    //         'name' => 'required|string|max:255',
-    //         'price' => 'required|not_in:0"',
-    //         'percent_change_1h' => 'required|numeric',
-    //         'percent_change_24h' => 'required|numeric',
-    //         'percent_change_7d' => 'required|numeric',
-    //         'percent_change_30d' => 'required|numeric',
-    //         'volume_24h' => 'required|numeric|not_in:0',
-    //         'market_cap' => 'required|numeric|not_in:0'
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'price' => 'required|not_in:0"',
+            'percent_change_1h' => 'required|numeric',
+            'percent_change_24h' => 'required|numeric',
+            'percent_change_7d' => 'required|numeric',
+            'percent_change_30d' => 'required|numeric',
+            'volume_24h' => 'required|numeric|not_in:0',
+            'market_cap' => 'required|numeric|not_in:0'
             
             
-    //     ]);
+        ]);
 
     //     $image= $request->file('image');
     //     // Si recibimos un objeto imagen tendremos que utilizar el disco para almacenarla
@@ -102,5 +102,5 @@ class AdminCryptocurrencyController extends Controller
     //             'message' => 'Post can not be updated'
     //         ], 500);
     //     }
-    // }
+    }
 }

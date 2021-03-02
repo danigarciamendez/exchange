@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use Carbon\Carbon;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
@@ -49,7 +50,7 @@ class CryptocurrencySeed extends Seeder
                 'name'=> $data[$i]['name'],
                 'symbol' => $data[$i]['symbol'],
                 'image' => $data[$i]['name'].'.png',
-                'price' => $data[$i]['quote']['USD']['price'],
+                'price' => round($data[$i]['quote']['USD']['price'],2),
                 'percent_change_1h' => round($data[$i]['quote']['USD']['percent_change_1h'],2),
                 'percent_change_24h' => round($data[$i]['quote']['USD']['percent_change_24h'],2),
                 'percent_change_7d' => round($data[$i]['quote']['USD']['percent_change_7d'],2),
@@ -57,6 +58,8 @@ class CryptocurrencySeed extends Seeder
                 'volume_24h' =>round($data[$i]['quote']['USD']['volume_24h'],3),
                 'market_cap' =>round($data[$i]['quote']['USD']['market_cap'],3),
                 'date_added' => substr($data[$i]['date_added'],0,10),
+                'created_at' =>  Carbon::now()->format('Y-m-d H:i:s'),
+                'updated_at' =>  Carbon::now()->format('Y-m-d H:i:s'),
             ]);
         }
         

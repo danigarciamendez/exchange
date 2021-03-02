@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Exchange;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
@@ -14,11 +15,24 @@ class AdminExchangeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $exchanges = Exchange::get();
+        // $exchange = Exchange::get();
 
-        return view('exchange.admin.index',compact('exchanges'));
+        if($request){
+            $type = $request->get('type');
+            $data = $request->get('data');
+    
+            $exchanges = Exchange::searchBy($type, $data)->paginate(5);
+            
+
+            return view('exchange.admin.index', compact('exchanges'));
+        }else{
+            $exchanges = Exchange::paginate(10);
+
+            return view('exchange.admin.index', compact('exchanges'));
+        }
+        
     }
 
     /**
@@ -28,7 +42,7 @@ class AdminExchangeController extends Controller
      */
     public function create()
     {
-        //
+        return view('exchange.admin.create');
     }
 
     /**
@@ -39,7 +53,39 @@ class AdminExchangeController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'required|string',
+            'image' =>'required',
+            'website' => 'required',
+            'crypto_number' => 'required',
+            'assessment' => 'required',
+        ]);
+
+        $exchange = new Exchange();
+        //Subir la imagen
+        // $image = $request->hasFile('image');
+        // Si recibimos un objeto imagen tendremos que utilizar el disco para almacenarla
+        // Para ello utilizaremos un objeto storage de Laravel
+        if($request->hasFile('image')){
+            // Generamos un nombre único para la imagen basado en time() y el nombre original de la imagen
+            $image_name =  time() . $request->file('image')->getClientOriginalName();
+            // Seleccionamos el disco virtual users, extraemos el fichero de la carpeta temporal
+            // donde se almacenó y guardamos la imagen recibida con el nombre generado
+            Storage::disk('exchanges')->put($image_name, File::get($request->hasFile('image')));
+            $exchange->image_name = $image_name;
+        }   
+        $exchange->name = $request->name;
+        $exchange->description = $request->description;
+        $exchange->website = $request->website;
+        
+        $exchange->assessment = floatval($request->assessment);
+        $exchange->crypto_number = intval($request->crypto_number);
+        
+
+        $exchange->save();
+
+        return redirect(route('exchange.admin.index'));
     }
 
     /**
@@ -75,20 +121,19 @@ class AdminExchangeController extends Controller
      */
     public function update(Request $request, Exchange $exchange)
     {
-        // $request->validate([
-        //     'name' => 'required|string|max:255',
-        //     'description' => 'required',
-        //     'image' => 'required',
-        //     'website' => 'required',
-        //     'crypto_number' => 'required|numeric',
-        //     'assessment' => 'required|numeric'
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'required',
+            'website' => 'required',
+            'crypto_number' => 'required',
+            'assessment' => 'required'
             
             
-        // ]);
+        ]);
 
         
 
-        $image= $request->file('image');
+        // $image= $request->file('image');
         // Si recibimos un objeto imagen tendremos que utilizar el disco para almacenarla
         // Para ello utilizaremos un objeto storage de Laravel
         
@@ -99,14 +144,14 @@ class AdminExchangeController extends Controller
         $exchange->website = $request->website;
         $exchange->crypto_number = $request->crypto_number;
         $exchange->assessment = $request->assessment;
-        if($image){
-            // Generamos un nombre único para la imagen basado en time() y el nombre original de la imagen
-            $image_name =  time() . $image->getClientOriginalName();
-            // Seleccionamos el disco virtual users, extraemos el fichero de la carpeta temporal
-            // donde se almacenó y guardamos la imagen recibida con el nombre generado
-            Storage::disk('exchanges')->put($image_name, File::get($image));
-            $exchange->image = $image_name;   
-        }
+        // if($image){
+        //     // Generamos un nombre único para la imagen basado en time() y el nombre original de la imagen
+        //     $image_name =  time() . $image->getClientOriginalName();
+        //     // Seleccionamos el disco virtual users, extraemos el fichero de la carpeta temporal
+        //     // donde se almacenó y guardamos la imagen recibida con el nombre generado
+        //     Storage::disk('exchanges')->put($image_name, File::get($image));
+        //     $exchange->image = $image_name;   
+        // }
         
 
         
@@ -114,7 +159,6 @@ class AdminExchangeController extends Controller
         $exchange->save();
  
         if ($exchange->save()){
-            
             return redirect()->route('exchange.admin.edit', ['exchange' => $exchange->id]);
         }else{
             return redirect()->route('exchange.admin.index');
@@ -130,6 +174,10 @@ class AdminExchangeController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $exchange = Exchange::find($id);
+
+        if($exchange->delete()){
+            return redirect()->route('exchange.admin.index');
+        }
     }
 }

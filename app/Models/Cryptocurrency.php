@@ -33,6 +33,8 @@ class Cryptocurrency extends Model
     public function follows(){
         return $this->hasMany(Follow::class);
     }
+
+
     public function users(){
         return $this->belongsToMany(User::class, 'follows', 'cryptocurrency_id', 'user_id');
     }

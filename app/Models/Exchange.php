@@ -23,4 +23,13 @@ class Exchange extends Model
     public function contains(){
         return $this->hasMany(Contain::class);
     }
+    public function cryptocurrencies(){
+        return $this->belongsToMany(Cryptocurrency::class, 'contains', 'exchange_id', 'cryptocurrency_id');
+    }
+
+    public function scopeSearchBy($query, $type, $search) {
+    	if ( ($type) && ($search) ) {
+    		return $query->where($type,'like',"%$search%");
+    	}
+    }
 }

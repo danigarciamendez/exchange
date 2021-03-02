@@ -1,7 +1,7 @@
 <x-app-layout>
    <x-slot name="header">
        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-           {{ __('Profile User') }}
+           {{ __('Edit User') }}
        </h2>
    </x-slot>
 
@@ -13,45 +13,45 @@
               
                      <form method="POST" action="{{ route('user.update') }}" enctype="multipart/form-data">
                          @csrf
-                         <x-input id="name" class="block mt-1 w-full"  type="hidden" name="id" :value="Auth::user()->id" required autofocus />
+                         <x-input id="name" class="block mt-1 w-full"  type="hidden" name="id" :value="$user->id" required autofocus />
                          <!-- Name -->
                          <div>
                              <x-label for="name" :value="__('Name')" />
               
-                             <x-input id="name" class="block mt-1 w-full" type="text" name="name" :value="Auth::user()->name" required autofocus />
+                             <x-input id="name" class="block mt-1 w-full" type="text" name="name" :value="$user->name" required autofocus />
                          </div>
               
                          <!-- Surname -->
                          <div class="mt-4">
                             <x-label for="surname" :value="__('Surname')" />
               
-                            <x-input id="surname" class="block mt-1 w-full" type="text" name="surname" :value="Auth::user()->surname " required />
+                            <x-input id="surname" class="block mt-1 w-full" type="text" name="surname" :value="$user->surname " required />
                          </div>
               
                          <!-- Nick -->
                          <div class="mt-4">
                             <x-label for="account_type" :value="__('Rol')" />
               
-                            <x-input id="account_type" class="block mt-1 w-full" type="text" name="account_type" readonly :value="Auth::user()->account_type"  />
+                            <x-input id="account_type" class="block mt-1 w-full" type="text"  readonly :value="$user->account_type"  />
                          </div>
               
                          <!-- Email Address -->
                          <div class="mt-4">
                              <x-label for="email" :value="__('Email')" />
               
-                             <x-input id="email" class="block mt-1 w-full" type="email" name="email" :value="Auth::user()->email" required />
+                             <x-input id="email" class="block mt-1 w-full" type="email" name="email" :value="$user->email" required />
                          </div>
               
                          <!-- Imagen de usuario -->
                          <div class="mt-4">
                            <x-label for="image" :value="__('Imagen')" />
                             
-                           <x-input id="image" class="mt-1" type="file" name="image" :value="Auth::user()->image" required />
-                            @if(is_null(Auth::user()->image))
+                           <x-input id="image" class="mt-1" type="file" name="image" :value="$user->image" required />
+                            @if(is_null($user->image))
                             
                                 <img alt="Photo of profile" class="shadow rounded border-none w-20 mt-2 ml-40" src="/proyectos/exchange/resources/img/user.png">
                             @else 
-                                    <img alt="Photo of profile" style="width: 100px;height: 100px;" class="shadow rounded align-middle border-none ml-40" src="{{ route('user.avatar',Auth::user()->image)}}">
+                                    <img alt="Photo of profile" style="width: 100px;height: 100px;" class="shadow rounded align-middle border-none ml-40" src="{{ route('user.avatar',$user->image)}}">
                             @endif
                            
                            <div class="flex flex-wrap justify-center mt-2">
@@ -79,7 +79,17 @@
                                              type="password"
                                              name="password_confirmation" required />
                          </div>
-              
+                        <!-- Is Admin -->
+                        <div class="mt-4">
+                            <label class="inline-flex items-center">
+                                <input type="radio" class="form-radio" name="account_type" value="admin">
+                                <span class="ml-2">Admin</span>
+                            </label>
+                            <label class="inline-flex items-center ml-6">
+                                <input type="radio" class="form-radio" name="account_type" value="user">
+                                <span class="ml-2">User</span>
+                            </label>
+                        </div>
                          <div class="flex items-center justify-end mt-4">
               
                              <x-button class="ml-4">

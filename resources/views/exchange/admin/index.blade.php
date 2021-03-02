@@ -10,7 +10,19 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 bg-white border-b border-gray-200">
-                
+                <form action="{{ route('exchange.admin.index') }}" class="form-inline" method="GET">
+                @csrf
+                    <select name="type" class="form-control mr-sm-2" id="exampleFormControlSelect1">
+                        <option value="name">Name</option>
+                        <option value="assessment">Assessment</option>
+                    </select>
+                    <input type="text" name="data">
+                    
+                    <button class="bg-yellow-500 rounded ml-2 p-2" type="submit">Search</button>
+                    <a class="bg-yellow-500  rounded p-2 text-right" href ="{{ route('exchange.admin.create') }}" >
+                                    {{ __('New Exchange') }}
+                    </a>
+                </form>
                 <table class="table-fixed border">
                     <thead>
                         <tr>
@@ -37,7 +49,7 @@
                                     {{ __('Editar') }}
                                 </a>
                             </td>
-                            <td><a class="bg-yellow-500  rounded p-2" href ="{{ route('exchange.admin.delete',$exchange) }}" >
+                            <td><a class="bg-yellow-500  rounded p-2" href ="{{ route('exchange.admin.destroy',$exchange->id) }}" >
                                     {{ __('Eliminar') }}
                                 </a>
                             </td>

@@ -46,24 +46,25 @@
                             @if($crypto->percent_change_24h > 0)
                             <td style="color: green;">{{$crypto->percent_change_24h}} %</td>
                             @endif
-                            @if($crypto->percent_change_24h < 0)
+                            @if($crypto->percent_change_24h < 0.00001)
                             <td style="color: red;">{{$crypto->percent_change_24h}} %</td>
                             @endif
 
                             
-                            @if(!array_search($crypto->id,$cryptos_id))
+                            @if(!array_search($crypto->name,$cryptos_name))
                             <form action="{{route('follow.new_follow')}}" method="post">
                             @csrf
                             <input type="text" name="cryptocurrency_id" value="{{$crypto->id}}" hidden>
                             <td><button type="submit"><i class="far fa-star"></i></button></td>
                             </form>
                             @else
-                            <form action="{{route('follow.delete')}}" method="get">
+                            <form method="POST" action="{{ route('follow.delete',$crypto->id)  }}">
                             @csrf
-                            <input type="text" name="cryptocurrency_id" value="{{$crypto->id}}" hidden>
+                            @method('DELETE')
                             <td><button type="submit"><i class="far fa-trash-alt"></i></button></td>
                             </form>
                             @endif
+                            
                             <td><a class="bg-yellow-500  rounded p-2" href ="{{ route('cryptocurrency.show',$crypto->id) }}" >
                                     {{ __('Detalles') }}
                                 </a>

@@ -7,7 +7,7 @@ use App\Models\User;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
+
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File;
 use Illuminate\Validation\Validator;
@@ -22,9 +22,10 @@ class CryptocurrencyController extends Controller
     public function index(Request $request)
     {   
         $follows = Auth::user()->cryptocurrencies;
-        $cryptos_id = [];
+        $cryptos_name = [];
+
         foreach ($follows as $follow) {
-            array_push($cryptos_id,$follow->id);
+            array_push($cryptos_name,$follow->name);
         }
 
         if($request){
@@ -34,11 +35,11 @@ class CryptocurrencyController extends Controller
             $cryptos = Cryptocurrency::searchBy($type, $data)->paginate(5);
             
 
-            return view('cryptocurrency.index', compact('cryptos'),compact('cryptos_id') );
+            return view('cryptocurrency.index', compact('cryptos'),compact('cryptos_name') );
         }else{
             $cryptos = Cryptocurrency::paginate(10);
 
-            return view('cryptocurrency.index', compact('cryptos'),compact('cryptos_id'));
+            return view('cryptocurrency.index', compact('cryptos'),compact('cryptos_name'));
         }
         
     }
@@ -118,25 +119,21 @@ class CryptocurrencyController extends Controller
      */
     public function update(Request $request, Cryptocurrency $cryptocurrency)
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'price' => 'required',
-            'symbol' => 'required',
-            'percent_change_1h' => 'required',
-            'percent_change_24h' => 'required',
-            'percent_change_7d' => 'required',
-            'percent_change_30d' => 'required',
-            'volume_24h' => 'required',
-            'market_cap' => 'required'
-            
-            
-        ]);
 
+        // Dejo comentado el validate por que no me deja actualizar aunque todo sea string 
         
+        // $request->validate([
+        //     'name' => 'required|string|max:255',
+        //     'price' => 'required|string',
+        //     'symbol' => 'required|string',
+        //     'percent_change_1h' => 'required|string',
+        //     'percent_change_24h' => 'required|string',
+        //     'percent_change_7d' => 'required|string',
+        //     'percent_change_30d' => 'required|string',
+        //     'volume_24h' => 'required|string',
+        //     'market_cap' => 'required|string'
+        // ]);
 
-        
-        // Si recibimos un objeto imagen tendremos que utilizar el disco para almacenarla
-        // Para ello utilizaremos un objeto storage de Laravel
         
         $crypto = Cryptocurrency::find($cryptocurrency->id);
         $crypto->name = $request->name;
@@ -146,9 +143,6 @@ class CryptocurrencyController extends Controller
         $crypto->percent_change_24h = $request->percent_change_24h;
         $crypto->percent_change_7d = $request->percent_change_7d;
         $crypto->percent_change_30d = $request->percent_change_30d;
-        
-
-        
         
         $crypto->save();
  
@@ -167,12 +161,12 @@ class CryptocurrencyController extends Controller
      * @param  \App\Models\Cryptocurrency  $cryptocurrency
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Cryptocurrency $cryptocurrency)
+    public function destroy($id)
     {
-        $crypto = Cryptocurrency::find($cryptocurrency->id);
+        $crypto = Cryptocurrency::find($id);
 
         if($crypto->delete()){
-            return view('cryptocurrency.index');
+            return redirect()->route('cryptocurrency.admin.index');
         }
     }
 

@@ -14,14 +14,14 @@
             
                 
                 <form method="POST" enctype="multipart/form-data" action="{{ route('cryptocurrency.admin.update',['cryptocurrency' => $cryptocurrency]) }}">
-                    
+                    @method('PATCH')
                     @csrf
 
                     <!-- Name Cryptocurrency -->
                     <div>
                         <x-label for="name" :value="__('Name')" />
 
-                        <x-input id="name" class="block mt-1 w-full" type="text" name="name" value="{{ $cryptocurrency->name }}" required autofocus />
+                        <x-input id="name" class="block mt-1 w-full" type="text" name="name" value="{{ old('name', $cryptocurrency->name) }}" required autofocus />
                     </div>
 
                     <!-- Symbol Cryptocurrency -->
@@ -45,7 +45,7 @@
                     <!-- Vol. Market Cryptocurrency -->
                     <div class="mt-4">
                         <x-label for="market_cap" :value="__('Market Cap.')" />
-
+                        
                         <x-input id="market_cap" class="block mt-1 w-full" type="text" name="market_cap" value="{{ old('market_cap', $cryptocurrency->market_cap) }}" required/>
                     </div>
 

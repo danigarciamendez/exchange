@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Cryptocurrency;
 use App\Models\Exchange;
 use App\Models\Follow;
 use Illuminate\Auth\Events\Registered;
@@ -100,14 +101,16 @@ class FollowController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-    public function delete(Request $request)
+    public function delete($id)
     {   
-        $id = $request->input('cryptocurrency_id');
+        
         $user_id = Auth::user()->id;
         $follow = Follow::where('cryptocurrency_id',$id)->where('user_id',$user_id);
 
+
+
         $follow->delete();
-        return redirect()->action([CryptocurrencyController::class, 'index']);
+        return redirect()->route('cryptocurrency.index');
         
     }
 

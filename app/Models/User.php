@@ -42,14 +42,23 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
-
+    /**
+     * Relación con tabla Follow
+     */
     public function follows(){
         return $this->hasMany(Follow::class);
     }
 
-
+    /**
+     * Relación con tabla Cryptocurrencies a traves de Follow
+     */
     public function cryptocurrencies(){
         return $this->belongsToMany(Cryptocurrency::class, 'follows', 'user_id', 'cryptocurrency_id');
     }
-
+    
+    public function scopeSearchBy($query, $type, $search) {
+    	if ( ($type) && ($search) ) {
+    		return $query->where($type,'like',"%$search%");
+    	}
+    }
 }

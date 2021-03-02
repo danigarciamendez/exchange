@@ -55,10 +55,15 @@
                                     {{ __('Editar') }}
                                 </a>
                             </td>
-                            <td><a class="bg-yellow-500 rounded p-2" href ="{{ route('cryptocurrency.admin.destroy',$crypto) }}" >
+                            <form method="POST" action="{{ route('cryptocurrency.admin.destroy',$crypto->id)  }}">
+                            @csrf
+                            @method('DELETE')
+                        
+                            <td><button type="submit" class="bg-yellow-500 rounded p-2" >
                                     {{ __('Eliminar') }}
                                 </a>
                             </td>
+                            </form>
                         </tr>
                     @endforeach
                     </tbody>

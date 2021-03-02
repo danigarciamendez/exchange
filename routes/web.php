@@ -85,9 +85,9 @@ Route::get('/dashboard', function () {
         }
     
     $cryptos = Auth::user()->cryptocurrencies;
-    
-    if(empty($cryptos)){
-        return view('dashboard');
+    $exists =  Auth::user()->cryptocurrencies()->exists();
+    if($exists){
+        return view('dashboard', compact('cryptos'));
     }else{
         return view('dashboard', compact('cryptos'));
     }
@@ -98,10 +98,29 @@ Route::get('/dashboard', function () {
     
 Route::get('user/profile', [UserController::class, 'profile'])
     ->middleware(['auth'])->name('user.profile');
+
 Route::get('user/avatar/{filename}', [UserController::class,'getImage'])
     ->middleware(['auth'])->name('user.avatar'); 
 Route::post('user/update', [UserController::class, 'update'])
     ->middleware(['auth'])->name('user.update');
+Route::get('user/admin/create', [UserController::class, 'create'])
+    ->middleware(['auth'])->name('user.admin.create');
+Route::post('user/admin/store', [UserController::class, 'store'])
+    ->middleware(['auth'])->name('user.admin.store');
+Route::get('/user/admin', [UserController::class, 'index'])
+    ->middleware(['auth'])->name('user.admin.index');
+Route::get('/user/admin/{user}/edit', [UserController::class, 'edit'])
+    ->middleware(['auth'])->name('user.admin.edit');
+    
+Route::post('/user/admin/{user}', [UserController::class, 'update'])
+    ->middleware(['auth'])->name('user.admin.update');
+        
+Route::post('/user/profile/update', [UserController::class, 'updateProfile'])
+->middleware(['auth'])->name('user.updateprofile');
+    
+Route::delete('/user/admin/destroy/{id}', [UserController::class, 'destroy'])
+    ->middleware(['auth'])->name('user.admin.destroy');
+
     
     // ROUTES OF CRYPTOCURRENCY
     
@@ -125,10 +144,10 @@ Route::get('/cryptocurrency/admin/create', [CryptocurrencyController::class, 'cr
 Route::get('/cryptocurrency/admin/{crypto}/edit', [CryptocurrencyController::class, 'edit'])
 ->middleware(['auth'])->name('cryptocurrency.admin.edit');
 
-Route::post('/cryptocurrency/admin/{cryptocurrency}', [CryptocurrencyController::class, 'update'])
+Route::patch('/cryptocurrency/admin/{cryptocurrency}', [CryptocurrencyController::class, 'update'])
 ->middleware(['auth'])->name('cryptocurrency.admin.update');
 
-Route::get('/cryptocurrency/admin/destroy', [CryptocurrencyController::class, 'destroy'])
+Route::delete('/cryptocurrency/admin/destroy/{id}', [CryptocurrencyController::class, 'destroy'])
 ->middleware(['auth'])->name('cryptocurrency.admin.destroy');
 
 Route::get('cryptocurrency/avatar/{filename}', [CryptocurrencyController::class,'getImage'])
@@ -143,13 +162,17 @@ Route::get('/exchange/{exchange}/show', [ExchangeController::class, 'show'])
 ->middleware(['auth'])->name('exchange.show');
 
 
+
+
     //ROUTES OF  ADMIN EXCHANGE
     
 Route::get('/exchange/admin', [AdminExchangeController::class, 'index'])
 ->middleware(['auth'])->name('exchange.admin.index');
     
-Route::get('/exchange/admin/create', [ExchangeController::class, 'create'])
+Route::get('/exchange/admin/create', [AdminExchangeController::class, 'create'])
 ->middleware(['auth'])->name('exchange.admin.create');
+Route::post('exchange/admin/store', [AdminExchangeController::class, 'store'])
+    ->middleware(['auth'])->name('exchange.admin.store');
 
 Route::get('/exchange/admin/{exchange}/edit', [AdminExchangeController::class, 'edit'])
 ->middleware(['auth'])->name('exchange.admin.edit');
@@ -157,14 +180,14 @@ Route::get('/exchange/admin/{exchange}/edit', [AdminExchangeController::class, '
 Route::post('/exchange/admin/{exchange}/update', [AdminExchangeController::class, 'update'])
 ->middleware(['auth'])->name('exchange.admin.update');
 
-Route::get('/exchange/admin/delete', [ExchangeController::class, 'destroy'])
-->middleware(['auth'])->name('exchange.admin.delete');
+Route::get('/exchange/admin/destroy/{id}', [AdminExchangeController::class, 'destroy'])
+->middleware(['auth'])->name('exchange.admin.destroy');
 
    // ROUTES OF FOLLOW
 
 Route::post('/cryptocurrency/follow', [FollowController::class, 'new_follow'])
    ->middleware(['auth'])->name('follow.new_follow');
-Route::get('/cryptocurrency/unfollow', [FollowController::class, 'delete'])
+Route::delete('/cryptocurrency/unfollow/{id}', [FollowController::class, 'delete'])
    ->middleware(['auth'])->name('follow.delete');
 
 
