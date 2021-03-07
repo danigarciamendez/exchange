@@ -10,6 +10,7 @@
            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                <div class="p-6 bg-white border-b border-gray-200">    
                    
+                    <x-auth-validation-errors class="mb-4" :errors="$errors" />
               
                      <form method="POST" action="{{ route('user.admin.store') }}" enctype="multipart/form-data">
                          @csrf
@@ -18,14 +19,14 @@
                          <div>
                              <x-label for="name" :value="__('Name')" />
               
-                             <x-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" required autofocus />
+                             <x-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')"  autofocus />
                          </div>
               
                          <!-- Surname -->
                          <div class="mt-4">
                             <x-label for="surname" :value="__('Surname')" />
               
-                            <x-input id="surname" class="block mt-1 w-full" type="text" name="surname" :value="old('surname')" required />
+                            <x-input id="surname" class="block mt-1 w-full" type="text" name="surname" :value="old('surname')"  />
                          </div>
               
               
@@ -33,14 +34,14 @@
                          <div class="mt-4">
                              <x-label for="email" :value="__('Email')" />
               
-                             <x-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('name')" required />
+                             <x-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('name')"  />
                          </div>
               
                          <!-- Imagen de usuario -->
                          <div class="mt-4">
                            <x-label for="image" :value="__('Imagen')" />
                             
-                           <x-input id="image" class="mt-1" type="file" name="image" :value="old('image')" required />
+                           <x-input id="image" class="mt-1" type="file" name="image" :value="old('image')"  />
                            
                          </div>
 

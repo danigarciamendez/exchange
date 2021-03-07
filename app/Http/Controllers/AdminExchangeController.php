@@ -124,7 +124,7 @@ class AdminExchangeController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'required',
-            'website' => 'required',
+            'website' => 'required|url',
             'crypto_number' => 'required',
             'assessment' => 'required'
             
@@ -144,6 +144,7 @@ class AdminExchangeController extends Controller
         $exchange->website = $request->website;
         $exchange->crypto_number = $request->crypto_number;
         $exchange->assessment = $request->assessment;
+        $exchange->image = $request->name.'.png';
         // if($image){
         //     // Generamos un nombre único para la imagen basado en time() y el nombre original de la imagen
         //     $image_name =  time() . $image->getClientOriginalName();

@@ -122,17 +122,16 @@ class CryptocurrencyController extends Controller
 
         // Dejo comentado el validate por que no me deja actualizar aunque todo sea string 
         
-        // $request->validate([
-        //     'name' => 'required|string|max:255',
-        //     'price' => 'required|string',
-        //     'symbol' => 'required|string',
-        //     'percent_change_1h' => 'required|string',
-        //     'percent_change_24h' => 'required|string',
-        //     'percent_change_7d' => 'required|string',
-        //     'percent_change_30d' => 'required|string',
-        //     'volume_24h' => 'required|string',
-        //     'market_cap' => 'required|string'
-        // ]);
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'price' => 'required|string',
+            'symbol' => 'required|string',
+            'percent_change_1h' => 'required|string',
+            'percent_change_24h' => 'required|string',
+            'percent_change_7d' => 'required|string',
+            'percent_change_30d' => 'required|string',
+            'market_cap' => 'required|string'
+        ]);
 
         
         $crypto = Cryptocurrency::find($cryptocurrency->id);

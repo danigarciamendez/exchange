@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+        <h2 class="pl-80 font-semibold text-xl text-gray-800 leading-tight">
             {{ __('Admin Exchanges') }}
         </h2>
     </x-slot>
@@ -46,11 +46,11 @@
                             <td><a href="{{$exchange->website}}">Ir a enlace</a></td>
                             <form action="" method="get" >
                             <td><a class="bg-yellow-500  rounded p-2" href ="{{ route('exchange.admin.edit',$exchange) }}" >
-                                    {{ __('Editar') }}
+                                    {{ __('Edit') }}
                                 </a>
                             </td>
                             <td><a class="bg-yellow-500  rounded p-2" href ="{{ route('exchange.admin.destroy',$exchange->id) }}" >
-                                    {{ __('Eliminar') }}
+                                    {{ __('Delete') }}
                                 </a>
                             </td>
                             </form>

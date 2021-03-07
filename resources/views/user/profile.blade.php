@@ -1,6 +1,6 @@
 <x-app-layout>
    <x-slot name="header">
-       <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+       <h2 class="pl-80 font-semibold text-xl text-gray-800 leading-tight">
            {{ __('Profile User') }}
        </h2>
    </x-slot>
@@ -10,22 +10,23 @@
            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                <div class="p-6 bg-white border-b border-gray-200">    
                    
+                <x-auth-validation-errors class="mb-4" :errors="$errors" />
               
                      <form method="POST" action="{{ route('user.update') }}" enctype="multipart/form-data">
                          @csrf
-                         <x-input id="name" class="block mt-1 w-full"  type="hidden" name="id" :value="Auth::user()->id" required autofocus />
+                         <x-input id="name" class="block mt-1 w-full"  type="hidden" name="id" :value="Auth::user()->id" autofocus />
                          <!-- Name -->
                          <div>
                              <x-label for="name" :value="__('Name')" />
               
-                             <x-input id="name" class="block mt-1 w-full" type="text" name="name" :value="Auth::user()->name" required autofocus />
+                             <x-input id="name" class="block mt-1 w-full" type="text" name="name" :value="Auth::user()->name"  />
                          </div>
               
                          <!-- Surname -->
                          <div class="mt-4">
                             <x-label for="surname" :value="__('Surname')" />
               
-                            <x-input id="surname" class="block mt-1 w-full" type="text" name="surname" :value="Auth::user()->surname " required />
+                            <x-input id="surname" class="block mt-1 w-full" type="text" name="surname" :value="Auth::user()->surname "  />
                          </div>
               
                          <!-- Nick -->
@@ -39,19 +40,19 @@
                          <div class="mt-4">
                              <x-label for="email" :value="__('Email')" />
               
-                             <x-input id="email" class="block mt-1 w-full" type="email" name="email" :value="Auth::user()->email" required />
+                             <x-input id="email" class="block mt-1 w-full" type="email" name="email" :value="Auth::user()->email"  />
                          </div>
               
                          <!-- Imagen de usuario -->
                          <div class="mt-4">
                            <x-label for="image" :value="__('Imagen')" />
                             
-                           <x-input id="image" class="mt-1" type="file" name="image" :value="Auth::user()->image" required />
+                           <x-input id="image" class="mt-1" type="file" name="image" :value="Auth::user()->image"  />
                             @if(is_null(Auth::user()->image))
                             
                                 <img alt="Photo of profile" class="shadow rounded border-none w-20 mt-2 ml-40" src="/proyectos/exchange/resources/img/user.png">
                             @else 
-                                    <img alt="Photo of profile" style="width: 100px;height: 100px;" class="shadow rounded align-middle border-none ml-40" src="{{ route('user.avatar',Auth::user()->image)}}">
+                                <img alt="Photo of profile" style="width: 100px;height: 100px;" class="shadow rounded align-middle border-none ml-40" src="{{ route('user.avatar',Auth::user()->image)}}">
                             @endif
                            
                            <div class="flex flex-wrap justify-center mt-2">
